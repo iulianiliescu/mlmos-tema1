@@ -2,4 +2,4 @@
 
 yum -y update
 
-sed 's/SELINX=enforcing/SELINX=disabled/g' /etc/selinux/config > /etc/selinux/config
+sed 's/SELINX=enforcing/SELINUX=disabled/g' /etc/selinux/config > /etc/selinux/config2
