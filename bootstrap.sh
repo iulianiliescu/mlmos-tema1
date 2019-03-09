@@ -10,9 +10,12 @@
 
 hostname="$(hostname)"
 
-if [! -f "$hostname.config"]; then
+if [ ! -f "$hostname.config" ]; then
 	echo "No bootstrap config"
+	exit 1
 fi
 
 static_ip=$(crudini --get $hostname.config general static_ip)
 echo $static_ip
+
+exit 0
