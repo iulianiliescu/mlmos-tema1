@@ -14,5 +14,5 @@ if [! -f "$hostname.config"]; then
 	echo "No bootstrap config"
 fi
 
-static_ip=$(crudini $hostname --get general static_ip)
+static_ip=$(crudini --get $hostname general static_ip)
 echo $static_ip
