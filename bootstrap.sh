@@ -1,9 +1,12 @@
 #!/bin/bash
 
-yum -y update
+#yum -y update
 
-sed 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config > /etc/selinux/config_tmp
-sed 's/SELINUX=permissive/SELINUX=disabled/g' /etc/selinux/config_tmp > /etc/selinux/config
-rm -f /etc/selinux/config_tmp
+# sed 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config > /etc/selinux/config_tmp
+# sed 's/SELINUX=permissive/SELINUX=disabled/g' /etc/selinux/config_tmp > /etc/selinux/config
+# rm -f /etc/selinux/config_tmp
+#
+# setenforce 0
 
-setenforce 0
+hostname="$(hostname)"
+echo "$hostname"
