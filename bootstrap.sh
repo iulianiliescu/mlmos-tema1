@@ -20,4 +20,6 @@ fi
 static_ip=$(crudini --get $hostname.config general static_ip)
 echo $static_ip
 
+nmcli con mod enp0s3 ipv4.addresses $static_ip/24
+
 exit 0
