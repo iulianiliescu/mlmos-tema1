@@ -18,8 +18,13 @@ if [ ! -f "$hostname.config" ]; then
 fi
 
 static_ip=$(crudini --get $hostname.config general static_ip)
-echo $static_ip
+gateway=$(crudini --get $hostname.config general gateway)
+dns=$(crudini --get $hostname.config general dns)
 
-nmcli con mod enp0s3 ipv4.addresses $static_ip/24
+nmcli con mod eno1 ipv4.addresses $static_ip/24
+nmcli con mod eno1 ipv4.gateway $gateway
+nmcli con mod eno1 ipv4.dns $dns
+nmcli con mod eno1 ipv4.method manual
+nmcli con mod eno1 connection.autoconnect yes
 
 exit 0
