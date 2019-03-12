@@ -17,19 +17,30 @@ if [ ! -f "$hostname.config" ]; then
 	exit 1
 fi
 
-static_ip=$(crudini --get $hostname.config general static_ip)
-gateway=$(crudini --get $hostname.config general gateway)
-dns=$(crudini --get $hostname.config general dns)
+for network in $(nmcli con | tail -n +2 | cut -d' ' -f1); do
+	echo "config for network $network"
 
-echo "setting ip"
-nmcli con mod enp0s3 ipv4.addresses $static_ip/24
-echo "setting gateway"
-nmcli con mod enp0s3 ipv4.gateway $gateway
-echo "setting dns"
-nmcli con mod enp0s3 ipv4.dns $dns
-echo "setting manual"
-nmcli con mod enp0s3 ipv4.method manual
-echo "setting autoconnect"
-nmcli con mod enp0s3 connection.autoconnect yes
+	check="$(crudini --get $hostname.config $network)"
+	echo "$(crudini --get $hostname.config $network)"
+	echo "$check"
+	if [[ $check=="Section not found: $network" ]]; then
+		continue
+	fi
+
+	static_ip=$(crudini --get $hostname.config $network static_ip)
+	gateway=$(crudini --get $hostname.config $network gateway)
+	dns=$(crudini --get $hostname.config $network dns)
+
+	echo "setting ip"
+	nmcli con mod $network ipv4.addresses $static_ip/24
+	echo "setting gateway"
+	nmcli con mod $network ipv4.gateway $gateway
+	echo "setting dns"
+	nmcli con mod $network ipv4.dns $dns
+	echo "setting manual"
+	nmcli con mod $network ipv4.method manual
+	echo "setting autoconnect"
+	nmcli con mod $network connection.autoconnect yes
+done
 
 exit 0
