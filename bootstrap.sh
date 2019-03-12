@@ -1,14 +1,14 @@
 #!/bin/bash
 
-echo "------------------------"
+echo "--------------------"
 
-#yum -y update
+yum -y update
 
-# sed 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config > /etc/selinux/config_tmp
-# sed 's/SELINUX=permissive/SELINUX=disabled/g' /etc/selinux/config_tmp > /etc/selinux/config
-# rm -f /etc/selinux/config_tmp
-#
-# setenforce 0
+sed 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config > /etc/selinux/config_tmp
+sed 's/SELINUX=permissive/SELINUX=disabled/g' /etc/selinux/config_tmp > /etc/selinux/config
+rm -f /etc/selinux/config_tmp
+
+setenforce 0
 
 hostname="$(hostname)"
 
@@ -18,6 +18,7 @@ if [ ! -f "$hostname.config" ]; then
 fi
 
 for network in $(nmcli con | tail -n +2 | cut -d' ' -f1); do
+	echo "--------------------"
 	echo "config for network $network"
 
 	check="$(crudini --get $hostname.config $network)"
@@ -38,5 +39,6 @@ for network in $(nmcli con | tail -n +2 | cut -d' ' -f1); do
 	echo "setting autoconnect"
 	nmcli con mod $network connection.autoconnect yes
 done
+echo "--------------------"
 
 exit 0
