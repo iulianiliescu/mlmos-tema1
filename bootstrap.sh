@@ -21,11 +21,7 @@ for network in $(nmcli con | tail -n +2 | cut -d' ' -f1); do
 	echo "config for network $network"
 
 	check="$(crudini --get $hostname.config $network)"
-	echo "$(crudini --get $hostname.config $network)"
-	echo "$check"
-	if [[ $check=="Section not found: $network" ]]; then
-		continue
-	fi
+	[ "$check" = "" ] && continue
 
 	static_ip=$(crudini --get $hostname.config $network static_ip)
 	gateway=$(crudini --get $hostname.config $network gateway)
