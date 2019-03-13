@@ -33,7 +33,7 @@ for network in $(nmcli con | tail -n +2 | cut -d' ' -f1); do
 	echo "setting gateway"
 	nmcli con mod $network ipv4.gateway $gateway
 	echo "setting dns"
-	nmcli con mod $network ipv4.dns $dns
+	nmcli con mod $network ipv4.dns "$dns"
 	echo "setting manual"
 	nmcli con mod $network ipv4.method manual
 	echo "setting autoconnect"
